@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE modification SYSTEM "http://www.simplemachines.org/xml/modification">
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ - Navgoco Menus Simple Portal jQuery Plugin
+ - Copyright 2014 ~ Underdog @ http://webdevelop.comli.com
+ - This software package is distributed under the terms of its CC BY 4.0 License: http://creativecommons.org/licenses/by/4.0/
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<modification xmlns="http://www.simplemachines.org/xml/modification" xmlns:smf="http://www.simplemachines.org/">
+	<id>underdog:navgoco</id>
+	<name>Navgoco Menus</name>
+	<version>1.2</version>
+	<file name="$sourcedir/PortalAdminBlocks.php">
+		<operation>
+			<search position="before"><![CDATA[	$context['SPortal']['is_new'] = empty($_REQUEST['block_id']);]]></search>
+			<add><![CDATA[
+
+	// navgoco menu unique input filters
+	$_POST = (!empty($_POST['block_type'])) && $_POST['block_type'] === 'sp_navgoco' ? navgoco_filter($_POST) : (!empty($_POST) ? $_POST : array());]]></add>
+		</operation>
+	</file>
+</modification>
