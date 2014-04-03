@@ -6,7 +6,7 @@
 * Copyright 2014 ~ Underdog @ http://webdevelop.comli.com		          *
 * This software package is distributed under the terms of its CC BY 4.0 License   *
 * http://creativecommons.org/licenses/by/4.0/					  *
-* @version 1.2									  *
+* @version 1.3									  *
 **********************************************************************************/
 
 if (!defined('SMF'))
@@ -57,7 +57,9 @@ function sp_navgoco($parameters, $id, $return_parameters = false)
 		'collapse' => 'text',
 		'direction' => 'select',
 		'display' => 'select',
-		'accordian' => 'check',
+		'c_anchor' => 'check',
+		'b_anchor' => 'check',
+		'accordion' => 'check',
 		'default' => 'check',
 	);
 
@@ -75,7 +77,9 @@ function sp_navgoco($parameters, $id, $return_parameters = false)
 				'toggle_color' => '#4169e1',
 				'expand' => 'expand.gif',
 				'collapse' => 'collapse.gif',
-				'accordian' => 1,
+				'c_anchor' => 0,
+				'b_anchor' => 0,
+				'accordion' => 1,
 			);
 
 			$content = '
@@ -165,6 +169,7 @@ function navgoco_menu($parameters, $view_boards, $display, $compactChars, $show=
 	$currentBoard = !empty($_REQUEST['board']) ? (int)$_REQUEST['board'] : 0;
 	$defaultIcons = !empty($parameters['default']) ? true : false;
 	$defaultColor = !empty($parameters['toggle_color']) ? 'color:' . $parameters['toggle_color'] . ';' : '';
+	$accordion = !empty($parameters['accordion']) ? $parameters['accordion'] : false;
 
 	if ($css === 'success')
 		$cssFile = $settings['theme_url'] . '/css/jquery.navgoco.css';
@@ -218,48 +223,49 @@ function navgoco_menu($parameters, $view_boards, $display, $compactChars, $show=
 
 	foreach ($cat_tree as $catid => $tree)
 	{
+		if (empty($boardList[$catid]))
+			continue;
+
 		$content .= '
 	<li>
-		<a onmouseover="changeNavgocoBg(\'navgoco' . $catid . '\')" onmouseout="changeNavgocoNoBg(\'navgoco' . $catid . '\')" class="navgoco_xlinks' . $class . '" id="navgoco' . $catid . '" href="' . $scripturl . '?action=forum#c' . $tree['node']['id'] . '"><strong ' . (!empty($parameters['board_color']) ? 'style="display:inline-block;color:' . $parameters['board_color'] . ';" ' : '') . '>' . ($display === 'full' ? $tree['node']['name'] : substr($tree['node']['name'], 0, (int)$compactChars) . (strlen($tree['node']['name']) > (int)$compactChars ? '...' : '')) . '</strong></a>';
-
-		if (!empty($boardList[$catid]))
-		{
-			$content .= '
+		<a onmouseover="changeNavgocoBg(\'navgoco' . $catid . '\')" onmouseout="changeNavgocoNoBg(\'navgoco' . $catid . '\')" class="navgoco_xlinks' . $class . '" id="navgoco' . $catid . '" href="' . (!empty($parameters['c_anchor']) ? $scripturl . '?action=forum#c' . $tree['node']['id'] : '#') . '"><strong ' . (!empty($parameters['board_color']) ? 'style="display:inline-block;color:' . $parameters['board_color'] . ';" ' : '') . '>' . ($display === 'full' ? $tree['node']['name'] : substr($tree['node']['name'], 0, (int)$compactChars) . (strlen($tree['node']['name']) > (int)$compactChars ? '...' : '')) . '</strong></a>
 		<ul>';
 
-			foreach ($boardList[$catid] as $key => $boardid)
-			{
-				if (empty($temp_boards[$boardid]))
-					continue;
+		$catchId[] = array('id' => 'navgoco' . $catid);
 
-				$catchId[] = array('id' => 'navgoco' . $catid);
-				$current_level = $boards[$boardid]['level'];
-				$next_level = isset($boardList[$catid][$key + 1]) ? $boards[$boardList[$catid][$key + 1]]['level'] : -1;
-				$boardColor = (!empty($currentBoard) && !empty($parameters['current_color'])) && $currentBoard == $boardid ? 'style="color:' . $parameters['current_color'] . ';" ' : '';
+		foreach ($boardList[$catid] as $key => $boardid)
+		{
+			if (empty($boards[$boardid]['tree']['node']))
+				continue;
 
-				$content .= '
-			<li>
-				<a ' . $boardColor . 'id="b_navgoco' . $boardid . '" onmouseover="changeNavgocoBg(\'b_navgoco' . $boardid . '\')" onmouseout="changeNavgocoNoBg(\'b_navgoco' . $boardid . '\')" ' . (!empty($parameters['child_color']) ? 'style="color:' . $parameters['child_color'] . ';" ' : '') . 'href="' . $scripturl . '?board=' . $boards[$boardid]['id'] . '">' . ($display === 'full' ? $boards[$boardid]['name'] : substr($boards[$boardid]['name'], 0, (int)$compactChars) . (strlen($boards[$boardid]['name']) > (int)$compactChars ? '...' : '')) . '</a>';
-
-				if ($next_level > $current_level)
-					$content .= '
-				<ul>';
-				else
-					$content .= '
-			</li>';
-
-				if ($next_level < $current_level && $current_level != 0)
-					$content .= '
-				</ul>
-			</li>';
-				elseif ($next_level > $current_level)
-					$content .= '
-			</li>';
-			}
+			$current_level = $boards[$boardid]['level'];
+			$next_level = isset($boardList[$catid][$key + 1]) ? $boards[$boardList[$catid][$key + 1]]['level'] : -1;
+			$boardColor = (!empty($currentBoard) && !empty($parameters['current_color'])) && $currentBoard == $boardid ? 'style="color:' . $parameters['current_color'] . ';" ' : '';
+			$boardLink = !empty($boards[$boardid]['tree']['node']['topics']) ? $scripturl . '?board=' . $boards[$boardid]['id'] . ';#top' : $scripturl . '?action=forum;#board_' . $boards[$boardid]['id'];
 
 			$content .= '
-		</ul>';
+			<li>
+				<a ' . $boardColor . 'id="b_navgoco' . $boardid . '" onmouseover="changeNavgocoBg(\'b_navgoco' . $boardid . '\')" onmouseout="changeNavgocoNoBg(\'b_navgoco' . $boardid . '\')" ' . (!empty($parameters['child_color']) ? 'style="color:' . $parameters['child_color'] . ';" ' : '') . 'href="' . (!empty($parameters['b_anchor']) ? $scripturl . '?action=forum;#board_' . $boards[$boardid]['id'] : $boardLink) . '">' . ($display === 'full' ? $boards[$boardid]['name'] : substr($boards[$boardid]['name'], 0, (int)$compactChars) . (strlen($boards[$boardid]['name']) > (int)$compactChars ? '...' : '')) . '</a>';
+
+			if ($next_level > $current_level)
+				$content .= '
+				<ul>';
+			else
+				$content .= '
+			</li>';
+
+			if ($next_level < $current_level && $current_level != 0)
+				$content .= '
+				</ul>
+			</li>';
+			elseif ($next_level > $current_level)
+				$content .= '
+			</li>';
 		}
+
+		$content .= '
+		</ul>';
+
 
 		$content .= '
 	</li>';
@@ -272,7 +278,7 @@ function navgoco_menu($parameters, $view_boards, $display, $compactChars, $show=
 	$content .= '
 <script type="text/javascript"><!-- // --><![CDATA[
 	$(document).ready(function() {
-	$("#mynavgoco_menu").navgoco({' . (empty($parameters['accordian']) ? 'accordion: true' : 'accordion: false') . '});
+	$("#mynavgoco_menu").navgoco({' . (empty($accordion) ? 'accordion: false' : 'accordion: true') . '});
 	});
 	function changeNavgocoBg(el)
 	{
@@ -292,7 +298,7 @@ function navgoco_menu($parameters, $view_boards, $display, $compactChars, $show=
 	}
 // ]]></script>';
 
-	$content .= navgocoCustomOptions($parameters['expand'], $parameters['collapse'], $direction, $catchId, $defaultIcons, $defaultColor);
+	$content .= navgocoCustomOptions($parameters['expand'], $parameters['collapse'], $direction, $catchId, $defaultIcons, $defaultColor, $accordion);
 
 	if ($show === 'echo')
 		echo $content;
@@ -301,7 +307,7 @@ function navgoco_menu($parameters, $view_boards, $display, $compactChars, $show=
 }
 
 // Onclick custom images
-function navgocoCustomOptions($expand = 'expand.gif', $collapse = 'collapse.gif', $direction, $catchId, $defaultIcons, $defaultColor)
+function navgocoCustomOptions($expand = 'expand.gif', $collapse = 'collapse.gif', $direction, $catchId, $defaultIcons, $defaultColor, $accordion = true)
 {
 	global $settings;
 
@@ -321,10 +327,12 @@ function navgocoCustomOptions($expand = 'expand.gif', $collapse = 'collapse.gif'
 		$new_span.attr("id", "span_' . $id['id'] . '");
 		$new_span.attr("style", "float:' . $float. ';");
 		$new_span.html(\'<img alt="" style="position:relative;" id="imgs_' . $id['id'] . '" onclick="changeNavgocoToggle(event.currentTarget.id, img_array);" src="' . $settings['theme_url'] . '/images/' . $expand . '" />\');
+		$("#' . $id['id'] . '").click(function() {$("#imgs_' . $id['id'] . '").click(true); changeNavgocoToggle("imgs_' . $id['id'] . '", img_array);});
 		';
 		else
 			$content .= '
 		var $new_span = $("#' . $id['id'] . ' span");
+		$("#' . $id['id'] . '").click(function() {$("#' . $id['id'] . ' span").click(true);});
 		$new_span.attr("id", "span_' . $id['id'] . '");
 		$new_span.attr("style", "float:' . $float. ';' . $defaultColor . '");
 		$new_span.attr("class", "navgoco_def");
@@ -342,12 +350,14 @@ function navgocoCustomOptions($expand = 'expand.gif', $collapse = 'collapse.gif'
 		else
 			el.src = "' . $settings['theme_url'] . '/images/' . $expand . '";
 
-		for (nava=1; nava<imgArray.length; nava++)
+		' . (!empty($accordion) ? '
+		for (nava=1; nava<imgArray.length+1; nava++)
 		{
 			var back = "imgs_navgoco" + nava;
 			if (myid !== back)
 				document.getElementById(back).src = "' . $settings['theme_url'] . '/images/' . $expand . '";
 		}
+		' : '') . '
 	}
 // ]]></script>';
 

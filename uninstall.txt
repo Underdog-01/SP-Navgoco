@@ -1,7 +1,8 @@
 Simple Portal Plugin ~ jQuery Navgoco Menus
-Version 1.2
+Version 1.3
 Copyright 2014 ~ Underdog @ http://webdevelop.comli.com
 Distributed under the [url=http://creativecommons.org/licenses/by/4.0/]CC BY 4.0 License[/url]
 
 
 This uninstallation process will remove the Simple Portal Navgoco Menus Plugin from your forum.
+It will also remove any associated blocks that were created for it.

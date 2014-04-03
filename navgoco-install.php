@@ -7,7 +7,7 @@
 /*
 	<id>underdog:navgoco</id>
 	<name>Navgoco Menus</name>
-	<version>1.2</version>
+	<version>1.3</version>
 	<type>modification</type>
 */
 /* This file is for adding necessary database entries */

@@ -1,5 +1,5 @@
 Simple Portal Plugin ~ jQuery Navgoco Menus
-Version 1.2
+Version 1.3
 Copyright 2014 ~ c/o Underdog @ http://webdevelop.comli.com
 Distributed under the [url=http://creativecommons.org/licenses/by/4.0/]CC BY 4.0 License[/url]
 
@@ -17,6 +17,16 @@ The third parties listed above are not in any way affiliated with Simple Portal 
 
 
 [u]Version History[/u]
+[i]v 1.3[/i]
++ option to anchor categories or enable onclick that toggles jQuery boards view
++ option to anchor boards or link to their page
++ empty boards are anchored by default
+! fixed duplicate category id
+! empty categories no longer displayed
+! fixed accordion display setting (was reversed)
+! fixed behavior of custom toggle icons when accordion is disabled
+! fixed display of empty boards
+
 [i]v 1.2[/i]
 + added option to use default toggle icons
 + added color option for default toggle icons

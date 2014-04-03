@@ -1,5 +1,5 @@
 <?php
-// Version: 1.2; SPortalAdminNavgoco
+// Version: 1.3; SPortalAdminNavgoco
 
 /*-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  - Navgoco Menus Simple Portal jQuery Plugin										       -
@@ -22,9 +22,11 @@ $txt['sp_param_sp_navgoco_toggle_color'] = 'Toggle Icon Color';
 $txt['sp_param_sp_navgoco_expand'] = 'Expand File Name';
 $txt['sp_param_sp_navgoco_collapse'] = 'Collapse File Name';
 $txt['sp_param_sp_navgoco_direction'] = 'Direction';
-$txt['sp_param_sp_navgoco_accordian'] = 'Accordian Display';
+$txt['sp_param_sp_navgoco_accordion'] = 'Accordion Display';
 $txt['sp_param_sp_navgoco_display'] = 'Display';
 $txt['sp_param_sp_navgoco_default'] = 'Default Toggle Icons';
+$txt['sp_param_sp_navgoco_c_anchor'] = 'Anchor Selected Category';
+$txt['sp_param_sp_navgoco_b_anchor'] = 'Anchor Selected Board';
 
 // parameter options
 $txt['sp_param_sp_navgoco_display_options'] = 'Full|Compact';
@@ -42,7 +44,9 @@ $helptxt['sp_param_sp_navgoco_toggle_color'] = 'Enter the color for default togg
 $helptxt['sp_param_sp_navgoco_expand'] = 'Enter the file name of the image icon for expanding the category. This file must be available in your custom theme\'s images folder.';
 $helptxt['sp_param_sp_navgoco_collapse'] = 'Enter the file name of the image icon for collapsing the category.  This file must be available in your custom theme\'s images folder.';
 $helptxt['sp_param_sp_navgoco_direction'] = 'Choose which side for which the text will appear.';
-$helptxt['sp_param_sp_navgoco_accordian'] = 'Enabling this option will opt an accordian style Navgoco Menu.';
+$helptxt['sp_param_sp_navgoco_accordion'] = 'Enabling this option will opt an accordion style Navgoco Menu.';
 $helptxt['sp_param_sp_navgoco_display'] = 'Choose whether to display the block as full or compact.  Compact is better suited for side blocks.';
 $helptxt['sp_param_sp_navgoco_default'] = 'Enabling this option will ignore the opted image files and use the default Navgoco image icons.';
+$helptxt['sp_param_sp_navgoco_c_anchor'] = 'Enabling this option will cause the selected category to be anchored. Disabling this option will cause the selected category to toggle its contained boards.';
+$helptxt['sp_param_sp_navgoco_b_anchor'] = 'Enabling this option will cause the selected board to be anchored. Disabling this option will cause the selected board to be linked.';
 ?>

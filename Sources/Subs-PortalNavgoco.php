@@ -6,7 +6,7 @@
 * Copyright 2014 ~ Underdog @ http://webdevelop.comli.com		          *
 * This software package is distributed under the terms of its CC BY 4.0 License   *
 * http://creativecommons.org/licenses/by/4.0/					  *
-* @version 1.2									  *
+* @version 1.3									  *
 **********************************************************************************/
 // Navgoco Menus Simple Portal jQuery Plugin Sub-Functions
 
